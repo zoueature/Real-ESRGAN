@@ -6,6 +6,7 @@ from basicsr.archs.rrdbnet_arch import RRDBNet
 
 from realesrgan import RealESRGANer
 from realesrgan.archs.srvgg_arch import SRVGGNetCompact
+from PIL import Image
 
 
 def main():
@@ -95,7 +96,11 @@ def main():
     for idx, path in enumerate(paths):
         imgname, extension = os.path.splitext(os.path.basename(path))
         print('Testing', idx, imgname)
-
+        if extension == '.ico':
+            originImg = Image.open(path)
+            path = path.replace('.ico', '.png')
+            print(path)
+            originImg.save(path, format='PNG')
         img = cv2.imread(path, cv2.IMREAD_UNCHANGED)
         if len(img.shape) == 3 and img.shape[2] == 4:
             img_mode = 'RGBA'
